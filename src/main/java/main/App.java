@@ -1,14 +1,11 @@
 package main;
 
-import service.WeatherService;
-
-import java.util.List;
+import service.Output;
+import service.FileOutput;
 
 public class App {
     public static void main(String[] args) {
-        WeatherService weatherService = new WeatherService();
-        List<String> list=weatherService.getMetrics();
-        list.stream().forEach(x-> System.out.println(x));
-
+        Output output = new FileOutput();
+        output.print();
     }
 }

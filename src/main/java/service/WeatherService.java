@@ -15,7 +15,7 @@ public class WeatherService {
 
     private static final String URL = "http://api.wunderground.com/api/10f14aa242fe6d99/history_20171030/q/NY/New_York.json";
 
-    public List<String> getMetrics(){
+    public List<String> getMetricsFromJson(){
         List<String> results = new ArrayList<>();
         LinkedHashMap linkedHashMap = getResults();
         for(Metrics metrics : Metrics.values()){
@@ -47,6 +47,9 @@ public class WeatherService {
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
+            if (conn.getResponseCode()!=200){
+                System.out.println("Problem with the api");
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (ProtocolException e) {
