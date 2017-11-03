@@ -1,40 +1,59 @@
 package service;
 
-import java.io.BufferedReader;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import enumeration.Metrics;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class WeatherService {
 
 
-    public void getResults(){
+    private static final String URL = "http://api.wunderground.com/api/10f14aa242fe6d99/history_20171030/q/NY/New_York.json";
+
+    public List<String> getMetrics(){
+        List<String> results = new ArrayList<>();
+        LinkedHashMap linkedHashMap = getResults();
+        for(Metrics metrics : Metrics.values()){
+            results.add((String)linkedHashMap.get(metrics.toString()));
+        }
+        return results;
+    }
+
+    private LinkedHashMap getResults() {
+        HttpURLConnection conn =getConnection();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> map = null;
         try {
-            URL url = new URL("http://api.wunderground.com/api/10f14aa242fe6d99/history_20171030/q/NY/New_York.json");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            map = objectMapper.readValue(conn.getInputStream(), HashMap.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LinkedHashMap<String, Object> linkedHashMap = (LinkedHashMap) map.get("history");
+        List list = (ArrayList) linkedHashMap.get("dailysummary");
+        LinkedHashMap<String, String> daily = (LinkedHashMap) list.get(0);
+        return daily;
+    }
+
+    private HttpURLConnection getConnection() {
+        URL url = null;
+        HttpURLConnection conn = null;
+        try {
+            url = new URL(URL);
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-
-            /*
-            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-            String line="";
-            line = br.readLine();
-            while (line!=null){
-                if(line.contains("maxhumidity"))
-                    System.out.println(line);
-                line=br.readLine();
-            }
-            */
-
-            HashMap<String,Object> result = new ObjectMapper()
-        }catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             e.printStackTrace();
-        }catch (IOException exception){
-            exception.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return conn;
     }
 }
