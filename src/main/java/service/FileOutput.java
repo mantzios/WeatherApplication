@@ -16,7 +16,7 @@ public class FileOutput implements Output {
     private static final String FILE_LOCATION = "results.txt";
 
     @Override
-    public void print() {
+    public void out() {
         List<String> list = weatherService.getMetricsFromJson();
         try {
             FileWriter fileWriter = new FileWriter(new File(FILE_LOCATION));

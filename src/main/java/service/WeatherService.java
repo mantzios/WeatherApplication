@@ -17,14 +17,14 @@ public class WeatherService {
 
     public List<String> getMetricsFromJson(){
         List<String> results = new ArrayList<>();
-        LinkedHashMap linkedHashMap = getResults();
+        LinkedHashMap linkedHashMap = getResultsFromJson();
         for(Metrics metrics : Metrics.values()){
             results.add((String)linkedHashMap.get(metrics.toString()));
         }
         return results;
     }
 
-    private LinkedHashMap getResults() {
+    private LinkedHashMap getResultsFromJson() {
         HttpURLConnection conn =getConnection();
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> map = null;
