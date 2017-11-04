@@ -15,4 +15,4 @@ by the FileOutput class and in the out method it writes the results in a txt fil
 
 <b> Enumeration Package </b>
 
-In this package there is the Enumeration class Metrics which contain the metrics we want to extract from the json.
+In this package there is the Enumeration class Metrics which contains the metrics we want to extract from the json.
