@@ -1,0 +1,4 @@
+maxhumidity		93
+maxtempm		16
+mintempm		8
+precipm		6.35
